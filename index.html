@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guilherme Faia — Data & Automation Analyst</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --text: #f0ece4;
+    --muted: #888;
+    --accent: #c8a96e;
+    --accent2: #4a8fa8;
+    --blue-light: #a8d4e6;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.25rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(14,14,14,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-name { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--accent); letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    line-height: 1.0;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--accent); }
+  .hero-desc {
+    max-width: 560px;
+    font-size: 16px; color: var(--muted); line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-tags {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .tag {
+    font-size: 12px; padding: 5px 14px;
+    border: 0.5px solid var(--border);
+    border-radius: 99px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+  .tag.highlight { border-color: var(--accent); color: var(--accent); }
+  .hero-langs {
+    margin-top: 1.5rem;
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 1s forwards;
+  }
+  .lang-item { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .lang-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; border-bottom: 0.5px solid var(--border); }
+  .section-header {
+    display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem;
+  }
+  .section-num { font-size: 11px; color: var(--accent); letter-spacing: 0.1em; }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 400;
+  }
+
+  /* FEATURED CASE */
+  .featured-case {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 0.5px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    background: var(--surface);
+  }
+  .featured-content { padding: 3rem; }
+  .featured-label {
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .featured-label::before {
+    content: ''; display: inline-block;
+    width: 20px; height: 0.5px; background: var(--accent);
+  }
+  .featured-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px; font-weight: 400; line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  .featured-desc { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+  .metrics-list { display: flex; flex-direction: column; gap: 10px; }
+  .metric-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: var(--muted);
+  }
+  .metric-row::before { content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+  .featured-image {
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; min-height: 320px;
+    border-left: 0.5px solid var(--border);
+  }
+  .featured-image img {
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.85;
+  }
+  .img-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    color: var(--muted); font-size: 12px; letter-spacing: 0.05em;
+    text-align: center; padding: 2rem;
+  }
+  .img-placeholder-icon {
+    width: 48px; height: 48px;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+
+  /* CASE GRID */
+  .case-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .case-item { background: var(--surface); padding: 2rem; transition: background 0.2s; }
+  .case-item:hover { background: var(--surface2); }
+  .case-sector-tag {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 1rem;
+  }
+  .case-item-title { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; margin-bottom: 0.75rem; line-height: 1.3; }
+  .case-item-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+  .case-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .case-tag { font-size: 11px; padding: 3px 10px; border: 0.5px solid var(--border); border-radius: 99px; color: var(--muted); }
+  .case-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 8px; margin-bottom: 1.25rem; border: 0.5px solid var(--border); background: var(--surface2); display: block; min-height: 140px; }
+
+  /* TOOLS */
+  .tools-section { }
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .tool-item { background: var(--surface); padding: 2rem 1.75rem; }
+  .tool-name { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .tool-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .tool-level { margin-top: 1rem; height: 2px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .tool-level-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 99px; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 4rem; }
+  .stat-item { background: var(--surface); padding: 2rem; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 40px; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+
+  /* CONTACT */
+  .contact-section { }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .contact-title { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 56px); font-weight: 400; line-height: 1.1; margin-bottom: 1.5rem; }
+  .contact-title em { font-style: italic; color: var(--accent); }
+  .contact-desc { font-size: 15px; color: var(--muted); line-height: 1.8; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none; color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--surface);
+  }
+  .contact-link:hover { border-color: var(--accent); background: var(--surface2); }
+  .contact-link-label { font-size: 13px; color: var(--muted); margin-bottom: 2px; }
+  .contact-link-value { font-size: 15px; font-weight: 500; }
+  .contact-link-arrow { color: var(--accent); font-size: 18px; }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s, transform 0.6s; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.25rem; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    section { padding: 4rem 1.5rem; }
+    .featured-case { grid-template-columns: 1fr; }
+    .featured-image { min-height: 200px; border-left: none; border-top: 0.5px solid var(--border); }
+    .contact-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-name">Guilherme Faia</span>
+  <div class="nav-links">
+    <a href="#cases">Cases</a>
+    <a href="#stack">Stack</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-eyebrow">Data & Automation Analyst · Available for freelance</div>
+  <h1 class="hero-title">Turning data<br>into <em>decisions</em></h1>
+  <p class="hero-desc">9+ years building BI dashboards, process automations, and integrated Microsoft ecosystems for enterprise clients across energy, healthcare, logistics and finance sectors.</p>
+  <div class="hero-tags">
+    <span class="tag highlight">Power BI</span>
+    <span class="tag highlight">Power Automate</span>
+    <span class="tag highlight">n8n</span>
+    <span class="tag">Microsoft 365</span>
+    <span class="tag">Azure SQL</span>
+    <span class="tag">Databricks</span>
+    <span class="tag">ETL Pipelines</span>
+    <span class="tag">API Integrations</span>
+  </div>
+  <div class="hero-langs">
+    <span class="lang-item"><span class="lang-dot"></span>Português — nativo</span>
+    <span class="lang-item"><span class="lang-dot"></span>English — fluent</span>
+    <span class="lang-item"><span class="lang-dot"></span>Italiano — intermedio</span>
+    <span class="lang-item"><span class="lang-dot"></span>Español — básico</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<section style="padding: 4rem 3rem;">
+  <div class="stats-row fade-in">
+    <div class="stat-item">
+      <div class="stat-num">9+</div>
+      <div class="stat-label">Years of experience</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">90%</div>
+      <div class="stat-label">Reduction in manual workload</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Industry sectors</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Automations delivered</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED CASE -->
+<section id="cases">
+  <div class="section-header fade-in">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Featured project</h2>
+  </div>
+  
+  <div class="featured-case fade-in" style="display: flex; flex-direction: row; background-color: #111111; border-radius: 12px; overflow: hidden; border: 1px solid #333333;">
+    
+    <div class="featured-content" style="width: 40%; padding: 40px; box-sizing: border-box;">
+      <div class="featured-label">Energy sector · Large enterprise · Confidential</div>
+      <h3 class="featured-title">Integrated logistics & accounting BI platform</h3>
+      <p class="featured-desc">End-to-end solution deployed across the entire Brazilian coast for one of the largest energy companies in South America. A complex integration between logistics and accounting departments, designed for national scale.</p>
+      
+      <div class="metrics-list">
+        <div class="metric-row">Role-based Power BI dashboards — each user profile sees a tailored view of the data</div>
+        <div class="metric-row">Automated audit system replacing traditional manual verification workflows entirely</div>
+        <div class="metric-row">Real-time alerts confirming correct accounting entries across all coastal operations</div>
+        <div class="metric-row">Full integration between logistics and financial data in a single platform</div>
+      </div>
+    </div>
+    
+    <div class="featured-image" style="width: 60%; display: flex;">
+      <img src="images/case-energy.png" style="width: flex; height: flex; object-fit: contain;" alt="Energy sector BI dashboard" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      
+      <div class="img-placeholder" style="display:none; width: 100%; align-items: center; justify-content: center; background: #222;">
+        <div style="text-align: center;">
+          <div class="img-placeholder-icon">📊</div>
+          <span>Add your dashboard screenshot here<br><code style="font-size:10px;">images/case-energy.png</code></span>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- OTHER CASES -->
+<section>
+  <div class="section-header fade-in">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Other sectors</h2>
+  </div>
+  <div class="case-grid fade-in">
+
+    <div class="case-item">
+      <div class="case-sector-tag">Healthcare</div>
+      <!-- Replace src with your image: images/case-hospital.png -->
+      <img class="case-image" src="images/case-hospital.png" alt="Hospital dashboard" onerror="this.style.display='none';">
+      <h3 class="case-item-title">Hospital operations automation</h3>
+      <p class="case-item-desc">Automated administrative flows and reporting for hospital management. Reduced manual tasks and improved data visibility for clinical and operational decision-making.</p>
+      <div class="case-tags">
+        <span class="case-tag">Power Automate</span>
+        <span class="case-tag">Power BI</span>
+        <span class="case-tag">Administrative flows</span>
+      </div>
+    </div>
+
+    <div class="case-item">
+      <div class="case-sector-tag">Operations & Logistics</div>
+      <!-- Replace src with your image: images/case-logistics.png -->
+      <img class="case-image" src="images/case-logistics.png" alt="Logistics dashboard" onerror="this.style.display='none';">
+      <h3 class="case-item-title">Maintenance & logistics analytics</h3>
+      <p class="case-item-desc">BI dashboards and automated flows for maintenance scheduling and logistics tracking, enabling proactive operational decisions and reducing downtime.</p>
+      <div class="case-tags">
+        <span class="case-tag">Power BI</span>
+        <span class="case-tag">Maintenance scheduling</span>
+        <span class="case-tag">Logistics tracking</span>
+      </div>
+    </div>
+
+    <div class="case-item">
+      <div class="case-sector-tag">Finance</div>
+      <!-- Replace src with your image: images/case-finance.png -->
+      <img class="case-image" src="images/case-finance.png" alt="Finance automation" onerror="this.style.display='none';">
+      <h3 class="case-item-title">Financial process automation</h3>
+      <p class="case-item-desc">End-to-end automation of financial workflows integrating multiple data sources across the Microsoft ecosystem, reducing manual reconciliation and accelerating month-end closing.</p>
+      <div class="case-tags">
+        <span class="case-tag">n8n</span>
+        <span class="case-tag">Power Automate</span>
+        <span class="case-tag">Microsoft 365</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="section-header fade-in">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Tech stack</h2>
+  </div>
+  <div class="tools-grid fade-in">
+    <div class="tool-item">
+      <div class="tool-name">Power BI</div>
+      <div class="tool-desc">Custom dashboards, DAX, RLS, role-based views, embedded analytics</div>
+      <div class="tool-level"><div class="tool-level-fill" style="width:96%"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Power Automate</div>
+      <div class="tool-desc">End-to-end process automation, approval flows, audit alerts</div>
+      <div class="tool-level"><div class="tool-level-fill" style="width:95%"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">n8n</div>
+      <div class="tool-desc">Complex workflow automation, API integrations, multi-system orchestration</div>
+      <div class="tool-level"><div class="tool-level-fill" style="width:88%"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Microsoft 365</div>
+      <div class="tool-desc">SharePoint, Teams, Excel, full ecosystem integration and automation</div>
+      <div class="tool-level"><div class="tool-level-fill" style="width:95%"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Azure SQL</div>
+      <div class="tool-desc">Data modeling, ETL pipelines, query optimization</div>
+      <div class="tool-level"><div class="tool-level-fill" style="width:82%"></div></div>
+    </div>
+    <div class="tool-item">
+      <div class="tool-name">Databricks</div>
+      <div class="tool-desc">Large-scale data processing, data engineering pipelines</div>
+      <div class="tool-level"><div class="tool-level-fill" style="width:75%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid fade-in">
+    <div>
+      <h2 class="contact-title">Let's work<br><em>together</em></h2>
+      <p class="contact-desc">Available for freelance projects in Spain, Italy, and Portugal. I help companies transform raw data into automated, intelligent workflows — so your team can focus on what matters.</p>
+    </div>
+    <div class="contact-links">
+      <!-- Replace href values with your actual links -->
+      <a class="contact-link" href="https://linkedin.com/in/guilherme-faia" target="_blank">
+        <div>
+          <div class="contact-link-label">LinkedIn</div>
+          <div class="contact-link-value">linkedin.com/in/guilherme-faia</div>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a class="contact-link" href="https://github.com/glhrmf/Guilherme-Faia" target="_blank">
+        <div>
+          <div class="contact-link-label">GitHub</div>
+          <div class="contact-link-value">github.com/glhrmf</div>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a class="contact-link" href="mailto:guigonfaia@gmail.com">
+        <div>
+          <div class="contact-link-label">Email</div>
+          <!-- Replace with your actual email -->
+          <div class="contact-link-value">guigonfaia@gmail.com</div>
+        </div>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Guilherme Faia</span>
+  <span>Data & Automation Analyst · Santos, Brazil</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
